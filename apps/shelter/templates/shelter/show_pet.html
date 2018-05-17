@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Shelter</title>
+    {% load staticfiles %}
+    <link rel='stylesheet' type='text/css' href='{% static "bootstrap-3.3.7-dist/css/bootstrap.css" %}'>
+    <link rel='stylesheet' type='text/css' href='{% static "shelter\css\show_pet.css" %}'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src='{% static "bootstrap-3.3.7-dist/js/bootstrap.js" %}'></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id='wrapper'>
+      <div id='navbar' class='navbar navbar-default'>
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button id='dropdown-icon' type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">
+              <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <a href='/' class='navbar-brand'>WCPS</a>
+          </div>
+          <div class="collapse navbar-collapse" id="links">
+            <ul class="nav navbar-nav navbar-right">
+              {% if request.session.id %}
+                {% if request.session.admin %}
+                  <li><a href="/users/{{request.session.id}}">Hi {{request.session.name}}(Admin)</a></li>
+                  <li><a href="/users">User List</a></li>
+                  <li><a href="/pets/admin">Approval List</a></li>
+                {% else %}
+                  <li><a href="/users/{{request.session.id}}">Hi {{request.session.name}}</a></li>
+                {% endif %}
+                <li><a href="/pets">Pet List</a></li>
+                <li><a href="/logout">Sign Out</a></li>
+              {% else %}
+                <li><a href='/register'>Sign Up or Sign In</a></li>
+                <li><a href="/pets">Pet List</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id='page' class="container">
+        {% if messages %}
+          {% for message in messages %}
+            <div class='row bg-{{ message.tags }}'>
+              <h3 {% if message.tags %} class="{{ message.tags }} col-xs-12"{% endif %}>{{message}}</h3>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class='entry'>
+          <div class='pethead'>
+            <div class="petname">
+              <div class='petpic'>
+                  {% if animal.pic_url %}
+                    <img src='{{pic_url}}' alt='{{name}}-pic'>
+                  {% else %}
+                    <img src='{% static "shelter\img\default-pet.png" %}' alt='default-pet-pic'>
+                  {% endif %}
+                </div>
+              <h3>{{name}}</h3>
+              <h4>{{species}}</h4>
+              {% if request.session.admin == True or animal.user and request.session.UserId == animal.user.id %}
+              <!-- Django interprets this as (==)or(user and (==)) -->
+                <div class='petoptions'>
+                  <form action='/pets/destroy/{{id}}' method="post">
+                    <input type='hidden' name='route' value='pets'>
+                    {% csrf_token %}<button type=submit>Delete Entry</button>
+                  </form>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <p>{{info}}</p>
+        </div>
+        <hr>
+        {% if request.session.admin == True or animal.user and request.session.UserId == animal.user.id %}
+        <!-- Django interprets this as (==)or(user and (==)) -->
+          <div id='updatePet' class="row">
+            <h3>Update {{name}}'s information</h3>
+            <form action='/edit_pet' method='post'>
+              {% csrf_token %}
+              <div class='col-sm-6'>
+                <div class='form-group'>
+                  <label for='name'>Name</label>
+                  <input type='text' name='name' id='name' placeholder="{{name}}" class="form-control">
+                </div>
+                <div class='form-group'>
+                  <label for='species'>Species</label>
+                  <input type='text' name='species' id='species' placeholder="{{species}}" class="form-control">
+                </div>
+              </div>
+              <div class='col-sm-6'>
+                <div class='form-group'>
+                  <label for='pic'>Optional pic url</label>
+                  <input type='text' name='pic' id='pic' {% if pic %} placeholder="{{pic}}" {% endif %} class="form-control">
+                </div>
+                <div class='form-group'>
+                  <label for='info'>Info</label>
+                  <input type='text' name='info' id='info' placeholder="{{info}}" class="form-control">
+                </div>
+              </div>
+              <input id='submit' type='submit'>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+      <div id='footer'></div>
+    </div>
+  </body>
+</html>

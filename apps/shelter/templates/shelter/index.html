@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Shelter</title>
+    {% load staticfiles %}
+    <link rel='stylesheet' type='text/css' href='{% static "bootstrap-3.3.7-dist/css/bootstrap.css" %}'>
+    <link rel='stylesheet' type='text/css' href='{% static "shelter\css\welcome.css" %}'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src='{% static "bootstrap-3.3.7-dist/js/bootstrap.js" %}'></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id='wrapper'>
+      <div id='navbar' class='navbar navbar-default'>
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button id='dropdown-icon' type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">
+              <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <a href='/' class='navbar-brand'>WCPS</a>
+          </div>
+          <div class="collapse navbar-collapse" id="links">
+            <ul class="nav navbar-nav navbar-right">
+              {% if request.session.id %}
+                {% if request.session.admin %}
+                  <li><a href="/users/{{request.session.id}}">Hi {{request.session.name}}(Admin)</a></li>
+                  <li><a href="/users">User List</a></li>
+                  <li><a href="/pets/admin">Approval List</a></li>
+                {% else %}
+                  <li><a href="/users/{{request.session.id}}">Hi {{request.session.name}}</a></li>
+                {% endif %}
+                <li><a href="/pets">Pet List</a></li>
+                <li><a href="/logout">Sign Out</a></li>
+              {% else %}
+                <li><a href='/register'>Sign Up or Sign In</a></li>
+                <li><a href="/pets">Pet List</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id='page' class='container'>
+        {% if messages %}
+          {% for message in messages %}
+            <div id='messages' class='row bg-{{ message.tags }}'>
+              <h3 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</h3>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <div id='familypic' class='row'>
+          <img src='{% static "shelter\img\family.jpeg" %}' alt='Family-pic'>
+        </div>
+        <h3>Welcome to the Wabasha County Pet Shelter</h3>
+        <div id='welcome' class='row'>
+          <div class='col-sm-1'></div>
+          <div class='col-sm-7'>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+          <div id='dogpic' class='col-sm-4'>
+              <img src='{% static "shelter\img\dog.jpg" %}' alt='Dog pic'>
+          </div>
+        </div>
+      </div>
+      <div id='footer'></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pet Shelter</title>
+    {% load staticfiles %}
+    <link rel='stylesheet' type='text/css' href='{% static "bootstrap-3.3.7-dist/css/bootstrap.css" %}'>
+    <link rel='stylesheet' type='text/css' href='{% static "shelter\css\pets.css" %}'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src='{% static "bootstrap-3.3.7-dist/js/bootstrap.js" %}'></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id='wrapper'>
+      <div id='navbar' class='navbar navbar-default'>
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button id='dropdown-icon' type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">
+              <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <a href='/' class='navbar-brand'>WCPS</a>
+          </div>
+          <div class="collapse navbar-collapse" id="links">
+            <ul class="nav navbar-nav navbar-right">
+              {% if request.session.id %}
+                {% if request.session.admin %}
+                  <li><a href="/users/{{request.session.id}}">Hi {{request.session.name}}(Admin)</a></li>
+                  <li><a href="/users">User List</a></li>
+                  <li><a href="/pets/admin">Approval List</a></li>
+                {% else %}
+                  <li><a href="/users/{{request.session.id}}">Hi {{request.session.name}}</a></li>
+                {% endif %}
+                <li><a href="/pets">Pet List</a></li>
+                <li><a href="/logout">Sign Out</a></li>
+              {% else %}
+                <li><a href='/register'>Sign Up or Sign In</a></li>
+                <li><a href="/pets">Pet List</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id='page' class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class='row bg-{{ message.tags }}'>
+              <h2 {% if message.tags %} class="{{ message.tags }} col-xs-12"{% endif %}>{{message}}</h2>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <h3>Call (###)###-#### to adopt a pet or for more information</h3>
+        <div class='row'>
+          <div id='title' class='col-sm-7'><h2>Pets Looking for a Home</h2></div>
+          <div id='actions' class='col-sm-5'>
+            <a type='button' class='btn btn-primary btn-block' href='/pets/new'>Submit an Animal for Adoption</a>
+            <a type='button' class='btn btn-primary btn-block'  href='/pets/adopted'>View All Adopted Pets</a>
+          </div>
+        </div>
+        <div class='row'>
+          <div id='petlist' class='col-sm-10 col-md-11'>
+            {% for animal in animals %}
+              <div class='entry'>
+                <div class='pethead'>
+                  <div class="petname">
+                    <div class='petpic'>
+                      <a href='/pets/{{animal.id}}'>
+                        {% if animal.pic_url %}
+                        <img src='{{animal.pic_url}}' alt='{{animal.name}}-pic'>
+                        {% else %}
+                        <img src='{% static "shelter\img\default-pet.png" %}' alt='default-pet-pic'>
+                        {% endif %}</a>
+                      </div>
+                    <h3>{{animal.name}}</h3>
+                    <h4>{{animal.species}}</h4>
+                    {% if request.session.admin == True or request.session.UserId == animal.user.id %}
+                    <div class='petoptions'>
+                      <form action='/pets/destroy/{{animal.id}}' method="post">
+                        <input type='hidden' name='route' value='pets'>
+                        {% csrf_token %}<button type=submit>Delete Entry</button>
+                      </form>
+                      {% if request.session.admin %}
+                      <form action='/pets/adopt/{{animal.id}}' method="post">
+                        {% csrf_token %}
+                        <button type=submit>Move to Adopted Pet List</button>
+                      </form>
+                      {% endif %}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <p>{{animal.info}}</p>
+              </div>
+              <hr>
+            {% empty %}
+              <h3>No available pets are registered in the shelter right now. Please call the number above for more information.</h3>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div id='footer'></div>
+    </div>
+  </body>
+</html>

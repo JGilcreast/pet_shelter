@@ -1,0 +1,98 @@
+body{
+	background: url("/static/shelter/texture/concrete-texture.png") repeat 0 0;
+
+	/* CSS reset */
+	vertical-align: baseline;
+	font-weight: inherit;
+	font-family: inherit;
+	font-style: inherit;
+	font-size: 18px;
+	border: 0 none;
+	outline: 0;
+	padding: 0;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Raleway', Helvetica, Arial, sans-serif;
+	display: block;
+	text-align: center;
+}
+p, div {
+	font-family: 'Goudy Bookletter 1911', Georgia, Times, serif;
+	line-height: 1.563em;
+}
+#page{
+	background-color: white;
+	margin: 0 auto;
+	padding: 0;
+	min-height: 90vh;
+	overflow: hidden;
+}
+#page h3{
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	padding: 20px;
+}
+#navbar{
+	background-color:#B43531;
+	color:white;
+	font-size: 1em;
+	border: 0;
+	margin-bottom: 0;   /* Overide Bootstrap's deafult navbar margin */
+}
+#navbar a{
+	color:white;
+}
+#navbar a:hover{
+	background-color: #911815;
+}
+#links a:hover{
+	background-color: #911815;
+}
+#dropdown-icon:hover,
+#dropdown-icon:focus{
+	background-color: #911815;
+}
+@media(max-width:768px){
+	.navbar-brand{
+		height: 61px;
+	}
+}
+#familypic{
+	text-align: center;
+	margin:auto;
+	overflow: hidden;
+	min-height: 360px
+}
+#familypic img{
+	min-width: 750px;
+	min-height: 300px;
+	width: 100%;
+	height: auto;
+}
+#dogpic{
+	text-align: center;
+}
+#welcome{
+	padding:10px;
+}
+#footer{
+	height: 40px;
+	background-color: #B43531;
+}
+@media(max-width:768px){
+	#familypic{
+		display: none;
+	}
+}
+@media(min-width:768px){
+	#welcome p{
+		display: inline-block;
+	}
+	#dogpic{
+		vertical-align: top;
+		text-align: center;
+		display: inline-block;
+	}
+}
