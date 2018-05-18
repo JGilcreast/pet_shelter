@@ -78,12 +78,13 @@
                     <div class='petoptions'>
                       <form action='/pets/destroy/{{animal.id}}' method="post">
                         <input type='hidden' name='route' value='pets'>
-                        {% csrf_token %}<button type=submit>Delete Entry</button>
+                        {% csrf_token %}
+                        <input type=submit value='Delete Entry' onclick='StopDoubleSubmit(this);'>
                       </form>
                       {% if request.session.admin %}
                         <form style='display:inline-block' action='/pets/unadopt/{{animal.id}}' method="post">
                           {% csrf_token %}
-                          <button type=submit>Move back to Adoptable Pets</button>
+                          <input type=submit value='Move back to Adoptable Pets' onclick='StopDoubleSubmit(this);'>
                         </form>
                       {% endif %}
                     </div>
@@ -101,5 +102,6 @@
       </div>
       <div id='footer'></div>
     </div>
+    <script src='{% static "shelter\js\script.js" %}'></script>
   </body>
 </html>

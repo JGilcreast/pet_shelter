@@ -55,6 +55,7 @@
           <div id='title' class='col-sm-7'><h2>User Submitted Pets Awaiting Approval</h2></div>
           <div id='actions' class='col-sm-5'>
             <a type='button' class='btn btn-primary btn-block' href='/pets/new'>Submit an Animal for Adoption</a>
+            <a type='button' class='btn btn-primary btn-block'  href='/pets'>View All Unadopted Pets</a>
             <a type='button' class='btn btn-primary btn-block'  href='/pets/adopted'>View All Adopted Pets</a>
           </div>
         </div>
@@ -83,11 +84,13 @@
                     </h4>
                     <div class='petoptions'>
                       <form action='/pets/approve/{{animal.id}}' method="post">
-                        {% csrf_token %}<button type=submit>Approve</button>
+                        {% csrf_token %}
+                        <input type=submit value='Approve' onclick='StopDoubleSubmit(this);'>
                       </form>
                       <form action='/pets/destroy/{{animal.id}}' method="post">
                         <input type='hidden' name='route' value='admin'>
-                        {% csrf_token %}<button type=submit>Deny</button>
+                        {% csrf_token %}
+                        <input type=submit value='Deny' onclick='StopDoubleSubmit(this);'>
                       </form>
                     </div>
                   </div>
@@ -103,5 +106,6 @@
       </div>
       <div id='footer'></div>
     </div>
+    <script src='{% static "shelter\js\script.js" %}'></script>
   </body>
 </html>

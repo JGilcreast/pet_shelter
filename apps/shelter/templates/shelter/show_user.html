@@ -58,11 +58,13 @@
             <p>Phone Number: {{number}}</p>
           {% endif %}
           <form action='/users/destroy/{{id}}' method="post">
-              {% csrf_token %}<button type=submit>Delete User</button>
+              {% csrf_token %}
+              <input type=submit value='Delete User' onclick='StopDoubleSubmit(this);'>
           </form>
         </div>
       </div>
       <div id='footer'></div>
     </div>
+    <script src='{% static "shelter\js\script.js" %}'></script>
   </body>
 </html>

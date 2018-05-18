@@ -68,7 +68,8 @@
                 <div class='petoptions'>
                   <form action='/pets/destroy/{{id}}' method="post">
                     <input type='hidden' name='route' value='pets'>
-                    {% csrf_token %}<button type=submit>Delete Entry</button>
+                    {% csrf_token %}
+                    <input type=submit value='Delete Entry' onclick='StopDoubleSubmit(this);'>
                   </form>
                 </div>
               {% endif %}
@@ -103,12 +104,13 @@
                   <input type='text' name='info' id='info' placeholder="{{info}}" class="form-control">
                 </div>
               </div>
-              <input id='submit' type='submit'>
+              <input id='submit' type='submit' onclick='StopDoubleSubmit(this);'>
             </form>
           </div>
         {% endif %}
       </div>
       <div id='footer'></div>
     </div>
+    <script src='{% static "shelter\js\script.js" %}'></script>
   </body>
 </html>

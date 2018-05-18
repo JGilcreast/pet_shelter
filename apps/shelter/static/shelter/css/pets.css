@@ -95,6 +95,7 @@ p, div {
 .petpic{
 	height: 175px;
 	width: 175px;
+	display: inline-block;
 	float: left;
 }
 .petpic img{
@@ -107,13 +108,14 @@ p, div {
 	display: inline-block;
 	text-align: center;
 }
-@media(max-width:440px){
+@media(max-width:475px){
 	.pethead{
 		width: 100%;
 	}
 	.petpic{
 		display: block;
 		margin: 0 auto;
+		float: none;
 	}
 	.petinfo{
 		width: 100%;
