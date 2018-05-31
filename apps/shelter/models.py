@@ -75,6 +75,39 @@ class PetManager(models.Manager):
         else:
             return {'fail': errors}
 
+    def update(self, id, name, species, info, pic_url, userId, admin):
+        animal = Pets.petManager.get(id=id)
+        if animal:
+            if (userId == animal.id or admin):
+                fields = []
+                errors = []
+                if name:
+                    fields.append('name')
+                    animal.name = name
+                    if len(name) < 1 :
+                        errors.append('The animal needs a name')
+                if species:
+                    fields.append('species')
+                    animal.species = species
+                    if len(species) < 1 :
+                        errors.append('The animal needs a species')
+                if info:
+                    fields.append('info')
+                    animal.info = info
+                    if len(info) < 30 :
+                        errors.append('The animal\'s information is too short. Must be at least 30 characters long.')
+                fields.append('pic_url')
+                animal.pic_url = pic_url
+                if (len(errors) == 0):
+                    animal.save(update_fields=fields)
+                    return {'success': animal.name}
+                else:
+                    return {'fail': errors}
+            else:
+                return {'fail': "You are not authorized to make changes to that pet"}
+        else:
+            return {'fail': "That pet wasn't found"}
+
     def approve(self, id):
         animal = Pets.petManager.get(id=id)
         if animal:
@@ -150,6 +183,8 @@ class PetManager(models.Manager):
                 'info': animal.info
             })
         return animals
+
+
 
 class Pets(models.Model):
     name = models.CharField(max_length=255)

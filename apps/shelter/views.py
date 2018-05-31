@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.http import QueryDict
 from django.contrib import messages
 from .models import Users, Pets
 
@@ -42,17 +43,32 @@ def profile(request, id):
         messages.warning(request, 'That user id does not exist')
         return redirect('/')
 
-def showPet(request, id):
+def showEditPet(request, id):
     pet = Pets.petManager.filter(id=id)
     if len(pet) > 0:
-        context = {
-            'id': pet[0].id,
-            'name': pet[0].name,
-            'species':pet[0].species,
-            'info': pet[0].info,
-            'pic': pet[0].pic_url
-        }
-        return render(request, 'shelter/show_pet.html', context)
+        if request.method == 'POST':
+            name = request.POST['name']
+            species = request.POST['species']
+            info = request.POST['info']
+            pic_url= request.POST['pic']
+            userId=request.session['id']
+            admin=request.session['admin']
+            result = Pets.petManager.update(id, name, species, info, pic_url, userId, admin)
+            if 'success' in result:
+                messages.success(request, 'You succesfully updated '+result['success']+'!')
+            else:
+                for error in result['fail']:
+                    messages.warning(request, error) #If register not successful, flash error message
+            return redirect('/pets/'+str(id))
+        else:
+            context = {
+                'id': pet[0].id,
+                'name': pet[0].name,
+                'species':pet[0].species,
+                'info': pet[0].info,
+                'pic_url': pet[0].pic_url
+            }
+            return render(request, 'shelter/show_pet.html', context)
     else:
         messages.warning(request, 'That animal id does not exist')
         return redirect('/pets')

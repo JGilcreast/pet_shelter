@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^pets/new$', views.registerPet),
     url(r'^pets/adopted$', views.adopted),
     url(r'^pets/admin$', views.pending_approval),
-    url(r'^pets/(?P<id>\d+)$', views.showPet),
+    url(r'^pets/(?P<id>\d+)$', views.showEditPet),
     url(r'^pets/approve/(?P<id>\d+)$', views.approvePet),
     url(r'^pets/destroy/(?P<id>\d+)$', views.deletePet),
     url(r'^pets/adopt/(?P<id>\d+)$', views.adoptPet),

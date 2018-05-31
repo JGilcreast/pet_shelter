@@ -55,7 +55,7 @@
           <div class='pethead'>
             <div class="petname">
               <div class='petpic'>
-                  {% if animal.pic_url %}
+                  {% if pic_url %}
                     <img src='{{pic_url}}' alt='{{name}}-pic'>
                   {% else %}
                     <img src='{% static "shelter\img\default-pet.png" %}' alt='default-pet-pic'>
@@ -82,7 +82,7 @@
         <!-- Django interprets this as (==)or(user and (==)) -->
           <div id='updatePet' class="row">
             <h3>Update {{name}}'s information</h3>
-            <form action='/edit_pet' method='post'>
+            <form action='/pets/{{id}}' method='post'>
               {% csrf_token %}
               <div class='col-sm-6'>
                 <div class='form-group'>
@@ -97,7 +97,7 @@
               <div class='col-sm-6'>
                 <div class='form-group'>
                   <label for='pic'>Optional pic url</label>
-                  <input type='text' name='pic' id='pic' {% if pic %} placeholder="{{pic}}" {% endif %} class="form-control">
+                  <input type='text' name='pic' id='pic' value='{{pic_url}}' class="form-control">
                 </div>
                 <div class='form-group'>
                   <label for='info'>Info</label>
